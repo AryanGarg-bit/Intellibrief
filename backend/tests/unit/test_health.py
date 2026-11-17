@@ -1,14 +1,15 @@
 """Unit tests for health and readiness routes (direct function tests)."""
 
 from app.routes.health import get_health, get_readiness
-from app.main import root
+from app.main import serve_index
 
 
 def test_root_endpoint():
-    """Verify that root endpoint responds with status online."""
-    data = root()
-    assert data["status"] == "online"
-    assert data["app"] == "IntelliBrief API"
+    """Verify that root endpoint serves the HTML frontend."""
+    response = serve_index()
+    assert response.status_code == 200
+    assert "IntelliBrief" in response.body.decode("utf-8")
+
 
 
 def test_health_endpoint():
